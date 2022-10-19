@@ -22,4 +22,4 @@ Route::get('/register', [AuthController::class, 'registerview']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'loginview']);
-// Route::get('/login', [App\Http\Controllers\AuthController::class, 'loginview']);
+Route::get('/logout', [AuthController::class, 'logout']);

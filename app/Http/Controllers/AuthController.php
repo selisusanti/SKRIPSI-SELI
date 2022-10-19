@@ -44,8 +44,8 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()
-            ->json(['data' => $user,'access_token' => $token, 'token_type' => 'Bearer', ]);
+        // return response()
+        //     ->json(['data' => $user,'access_token' => $token, 'token_type' => 'Bearer', ]);
     }
 
     public function login(Request $request)
@@ -60,25 +60,27 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
+        Auth::loginUsingId($user->id);
         $request->session()->regenerate();
-
         return redirect('/')
                 ->with([
                     'success' => 'Welcome to solusi bantuan final portal!'
                 ]);
-
-        // return response()
-            // ->json(['message' => 'Hi '.$user->name.', welcome to home','data' => $user,'access_token' => $token, 'token_type' => 'Bearer', ]);
     }
 
     // method for user logout and delete token
-    public function logout()
+    public function logout(Request $request)
     {
-        return "ok";
-        auth()->user()->tokens()->delete();
+        // auth()->user()->tokens()->delete();
+        Auth::logout();
 
-        return [
-            'message' => 'You have successfully logged out and the token was successfully deleted'
-        ];
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/')
+                ->with([
+                    'success' => 'Sukses Logout !'
+                ]);
     }
 }

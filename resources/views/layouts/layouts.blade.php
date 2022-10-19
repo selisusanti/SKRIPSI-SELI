@@ -49,20 +49,26 @@
                     </div>
                 </div>
                 <div class="ht-right">
-                    <a href="/login" class="login-panel"><i class="fa fa-user"></i>Login</a>
+                    @if(Auth::check())
+                        <a href="/logout" class="login-panel"><i class="fa fa-sign-out "></i> logout</a>
+                    @else
+                        <a href="/login" class="login-panel"><i class="fa fa-user"></i>Login</a>
+                    @endif
                     <!-- END User Dropdown -->
                     <!-- END User Dropdown -->
-                    <div class="login-panel">
-                       sdsf &nbsp;
-                    </div>
-                    <div class="lan-selector">
+                    @if(Auth::check())
+                        <div class="login-panel">
+                            <i class="fa fa-cog"></i> {{ Auth::user()->name }} &nbsp;
+                        </div>
+                    @endif
+                    <!-- <div class="lan-selector">
                         <select class="language_drop" name="countries" id="countries" style="width:300px;">
                             <option value='yt' data-image="img/flag-1.jpg" data-imagecss="flag yt"
                                 data-title="English">English</option>
                             <option value='yu' data-image="img/flag-2.jpg" data-imagecss="flag yu"
                                 data-title="Bangladesh">German </option>
                         </select>
-                    </div>
+                    </div> -->
                     <div class="top-social">
                         <a href="#"><i class="ti-facebook"></i></a>
                         <a href="#"><i class="ti-twitter-alt"></i></a>
