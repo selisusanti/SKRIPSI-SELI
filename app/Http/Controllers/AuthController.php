@@ -42,8 +42,13 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
          ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
 
+        return redirect('/')
+                ->with([
+                    'success' => 'Register Sukses, tolong cek email!'
+                ]);
+
+        // $token = $user->createToken('auth_token')->plainTextToken;
         // return response()
         //     ->json(['data' => $user,'access_token' => $token, 'token_type' => 'Bearer', ]);
     }
