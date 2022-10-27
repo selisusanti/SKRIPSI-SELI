@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Hash;
 use Auth;
 use Validator;
 use App\User;
+use App\Models\Office;
+use App\Models\Produk;
+use App\Models\Kategori;
+
 
 class AuthController extends Controller
 {
@@ -14,6 +18,24 @@ class AuthController extends Controller
         // $this->middleware('auth:sanctum', ['except' => ['loginview','login', 'register']]);
     }
     
+    public function index(Request $request)
+    {
+        $office         = Office::first();
+        $kategori       = Kategori::get();
+        $sofa           = Produk::where('status','1')
+                            ->where('id_kategori','1')
+                            ->get();
+        $meja           = Produk::where('status','1')
+                            ->where('id_kategori','2')
+                            ->get();
+
+        return view('welcome')
+            ->with('office', $office)
+            ->with('meja', $meja)
+            ->with('sofa', $sofa)
+            ->with('kategori', $kategori);
+    }
+
     public function registerview(Request $request)
     {
         return view('register');

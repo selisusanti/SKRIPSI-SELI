@@ -7,7 +7,7 @@
     <meta name="keywords" content="Fashi, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Fashi | Template</title>
+    <title>Ratans | Jual beli produk rotan</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
@@ -164,30 +164,29 @@
                         <i class="ti-menu"></i>
                         <span>All departments</span>
                         <ul class="depart-hover">
-                            <li class="active"><a href="#">Women’s Clothing</a></li>
-                            <li><a href="#">Men’s Clothing</a></li>
-                            <li><a href="#">Underwear</a></li>
-                            <li><a href="#">Kid's Clothing</a></li>
-                            <li><a href="#">Brand Fashion</a></li>
-                            <li><a href="#">Accessories/Shoes</a></li>
-                            <li><a href="#">Luxury Brands</a></li>
-                            <li><a href="#">Brand Outdoor Apparel</a></li>
+                            @if(isset($kategori))
+                                @foreach ($kategori as $row)
+                                    <li class="{{Request::segment(1) == $row->kategori ? 'active' : ''}}"><a href="#">{{ $row->kategori }}</a></li>
+                                @endforeach
+                            @endif
                         </ul>
                     </div>
                 </div>
                 <nav class="nav-menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="/">Home</a></li>
-                        <li><a href="./shop.html">Shop</a></li>
-                        <li><a href="#">Collection</a>
+                        <li class="{{Request::segment(1) == 'home' || Request::segment(1) == '' ? 'active' : ''}}"><a href="/">Home</a></li>
+                        <li class="{{Request::segment(1) == 'shop' ? 'active' : ''}}"><a href="/shop">Shop</a></li>
+                        <!-- <li class="{{ in_array(Request::segment(1),['setting-usdt','broker'])  ? 'open' : ''}}"><a href="#">Collection</a>
                             <ul class="dropdown">
-                                <li><a href="#">Men's</a></li>
-                                <li><a href="#">Women's</a></li>
-                                <li><a href="#">Kid's</a></li>
+                                @if(isset($kategori))
+                                    @foreach ($kategori as $row)
+                                        <li class="{{Request::segment(1) == $row->kategori ? 'active' : ''}}"><a href="#">{{ $row->kategori }}</a></li>
+                                    @endforeach
+                                @endif>
                             </ul>
-                        </li>
+                        </li> -->
                         <!-- <li><a href="./blog.html">Blog</a></li> -->
-                        <li><a href="./contact.html">Contact</a></li>
+                        <li class="{{Request::segment(1) == 'contact' ? 'active' : ''}}"><a href="/contact">Contact</a></li>
                         <!-- <li><a href="#">Pages</a>
                             <ul class="dropdown">
                                 <li><a href="./blog-details.html">Blog Details</a></li>
@@ -218,15 +217,15 @@
                             <a href="#"><img src="img/ratans/footer-logo.png" alt=""></a>
                         </div>
                         <ul>
-                            <li>Address: Tegalsari, Kec. Plered, Kabupaten Cirebon, Jawa Barat 45154</li>
-                            <li>Phone: +62 896.2688.5802</li>
-                            <li>Email: seli.toyamilindo@gmail.com</li>
+                            <li>Address: {{ $office->address ?? '' }}</li>
+                            <li>Phone: {{ $office->phone ?? '' }}</li>
+                            <li>Email: {{ $office->email ?? ''}}</li>
                         </ul>
                         <div class="footer-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                            <a href="{{ $office->fb ?? '' }}"><i class="fa fa-facebook"></i></a>
+                            <a href="{{ $office->ig ?? '' }}"><i class="fa fa-instagram"></i></a>
+                            <a href="{{ $office->twitte ?? '' }}"><i class="fa fa-twitter"></i></a>
+                            <!-- <a href="{{ $office->tiktok ?? '' }}"><i class="fa fa-"></i></a> -->
                         </div>
                     </div>
                 </div>
@@ -270,7 +269,7 @@
                     <div class="col-lg-12">
                         <div class="copyright-text">
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>.Downloaded from <a href="https://themeslab.org/" target="_blank">Themeslab</a>
+                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | SELI SUSANTI <i class="fa fa-heart-o" aria-hidden="true"></i></a>
                             <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                         </div>
                         <div class="payment-pic">
