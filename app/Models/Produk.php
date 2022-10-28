@@ -12,4 +12,13 @@ class Produk extends Model
     protected $primaryKey   = 'id';
     protected $table        = 'tbl_produk';
     protected $guarded      = [];
+
+
+    /**
+     * connecting to image eloquent relationship
+    */
+    public function detailImage() {
+        return $this->hasMany('App\Models\Detailproduk', 'id_produk', 'id');
+    }
+
 }

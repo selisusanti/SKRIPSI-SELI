@@ -19,6 +19,7 @@ use App\Http\Controllers\ShopController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+
 //API route for login user
 Route::get('', [AuthController::class, 'index']);
 Route::get('register', [AuthController::class, 'registerview']);
@@ -33,9 +34,6 @@ Route::post('comment', [ContactController::class, 'comment']);
 
 
 Route::get('shop', [ShopController::class, 'index']);
-Route::get('/detail/{id}', [ShopController::class, 'detail']);
-
-
-// Route::get('/detail', function () {
-//     return view('detail');
-// });
+Route::get('shop/{id}', [ShopController::class, 'detail']);
+Route::post('shop', [ShopController::class, 'save']);
+Route::post('updateShop', [ShopController::class, 'update']);

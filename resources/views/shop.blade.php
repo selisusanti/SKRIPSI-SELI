@@ -1,7 +1,15 @@
 @extends('layouts.layouts')
 @section('title', 'Profile')
 @section('content')
+    @if(isset($page))
+    <?php $noPage = $page ?>
+    @else
+    <?php $noPage = 1; ?>
+    @endif
 
+    <?php $offset = ($noPage - 1) * $perpage;	?>
+    <?php $noPage = $page ; ?>
+    <?php $i = $noPage + ($noPage - 1) * ($perpage - 1); ?>
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
         <div class="container">
@@ -68,31 +76,23 @@
                     <div class="product-show-option">
                         <div class="row">
                             <div class="col-lg-7 col-md-7">
-                                <div class="select-option">
+                                <!-- <div class="select-option">
                                     <select class="sorting">
                                         <option value="">Default Sorting</option>
                                     </select>
                                     <select class="p-show">
                                         <option value="">Show:</option>
                                     </select>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="col-lg-5 col-md-5 text-right">
-                                <p>Show 01- 09 Of 36 Product</p>
+                                <p>Show {{ $i ?? '0' }} - {{ $paging['to'] }} Of {{ $paging['total'] ?? '0' }} Product</p>
                             </div>
                         </div>
                     </div>
                     <div class="product-list">
                         <div class="row">
-                            @if(isset($page))
-                            <?php $noPage = $page ?>
-                            @else
-                            <?php $noPage = 1; ?>
-                            @endif
-
-                            <?php $offset = ($noPage - 1) * $perpage;	?>
-                            <?php $noPage = $page ; ?>
-                            <?php $i = $noPage + ($noPage - 1) * ($perpage - 1); ?>
+                            
                             @if(isset($produk))
                                 @foreach($produk as $produks)
                                 <div class="col-lg-4 col-sm-6">
@@ -105,7 +105,7 @@
                                             </div>
                                             <ul>
                                                 <li class="w-icon active"><a href="#"><i class="icon_bag_alt"></i></a></li>
-                                                <li class="quick-view"><a href="/detail/2">+ Quick View</a></li>
+                                                <li class="quick-view"><a href="/shop/{{ $produks->id ?? '' }}">+ Quick View</a></li>
                                                 <li class="w-icon"><a href="#"><i class="fa fa-random"></i></a></li>
                                             </ul>
                                         </div>
