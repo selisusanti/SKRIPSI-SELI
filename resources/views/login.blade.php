@@ -2,6 +2,18 @@
 @section('title', 'Profile')
 @section('content')
 
+    @if(Session::has('error'))
+        @php
+            $errorLogin = Session::get('error');
+        @endphp
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{ $errorLogin }}</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+
     <!-- Breadcrumb Section Begin -->
     <div class="breacrumb-section">
         <div class="container">

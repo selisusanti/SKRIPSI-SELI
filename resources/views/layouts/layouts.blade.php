@@ -57,9 +57,7 @@
                     <!-- END User Dropdown -->
                     <!-- END User Dropdown -->
                     @if(Auth::check())
-                        <div class="login-panel">
-                            <i class="fa fa-cog"></i> {{ Auth::user()->name }} &nbsp;
-                        </div>
+                        <a href="/profile" class="login-panel"> <i class="fa fa-cog"></i> {{ Auth::user()->name }} &nbsp; </a>
                     @endif
                     <!-- <div class="lan-selector">
                         <select class="language_drop" name="countries" id="countries" style="width:300px;">
@@ -83,7 +81,7 @@
                 <div class="row">
                     <div class="col-lg-2 col-md-2">
                         <div class="logo">
-                            <a href="./index.html">
+                            <a href="/">
                                 <img src="/img/ratans/logo.png" alt="">
                             </a>
                         </div>
@@ -99,59 +97,60 @@
                     </div>
                     <div class="col-lg-3 text-right col-md-3">
                         <ul class="nav-right">
-                            <li class="heart-icon">
+                            <!-- <li class="heart-icon">
                                 <a href="#">
                                     <i class="icon_heart_alt"></i>
                                     <span>1</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="cart-icon">
                                 <a href="#">
                                     <i class="icon_bag_alt"></i>
-                                    <span>3</span>
+                                    <span>{{ count(Session::get('cartItems')) ?? '0' }}</span>
                                 </a>
                                 <div class="cart-hover">
                                     <div class="select-items">
                                         <table>
                                             <tbody>
-                                                <tr>
-                                                    <td class="si-pic"><img src="/img/select-product-1.jpg" alt=""></td>
-                                                    <td class="si-text">
-                                                        <div class="product-selected">
-                                                            <p>$60.00 x 1</p>
-                                                            <h6>Kabino Bedside Table</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td class="si-close">
-                                                        <i class="ti-close"></i>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="si-pic"><img src="/img/select-product-2.jpg" alt=""></td>
-                                                    <td class="si-text">
-                                                        <div class="product-selected">
-                                                            <p>$60.00 x 1</p>
-                                                            <h6>Kabino Bedside Table</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td class="si-close">
-                                                        <i class="ti-close"></i>
-                                                    </td>
-                                                </tr>
+
+                                                @php
+                                                    $total = 0 ;
+                                                @endphp
+
+                                                @if(isset($cartItems))
+                                                    @foreach ($cartItems as $item)
+                                                        <tr>
+                                                            <td class="si-pic"><img src="{{ $item->associatedModel->image ?? '' }}" alt=""></td>
+                                                            <td class="si-text">
+                                                                <div class="product-selected">
+                                                                    <p>{{ $item->price ?? '' }} x {{ $item->quantity ?? '' }}</p>
+                                                                    <h6>{{ $item->name ?? ''}}</h6>
+                                                                </div>
+                                                            </td>
+                                                            <td class="si-close">
+                                                                <i class="ti-close"></i>
+                                                            </td>
+                                                        </tr>
+                                                        @php
+                                                            $harga = $item->price * $item->quantity;
+                                                            $total = $total + $harga;
+                                                        @endphp
+                                                    @endforeach
+                                                @endif
                                             </tbody>
                                         </table>
                                     </div>
                                     <div class="select-total">
                                         <span>total:</span>
-                                        <h5>$120.00</h5>
+                                        <h5>Rp. {{ number_format($total ?? '','0') }}</h5>
                                     </div>
                                     <div class="select-button">
-                                        <a href="#" class="primary-btn view-card">VIEW CARD</a>
+                                        <a href="/cart" class="primary-btn view-card">VIEW CARD</a>
                                         <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
                                     </div>
                                 </div>
                             </li>
-                            <li class="cart-price">$150.00</li>
+                            <li class="cart-price">Rp. {{ number_format($total ?? '','0') }} </li>
                         </ul>
                     </div>
                 </div>
@@ -164,8 +163,11 @@
                         <i class="ti-menu"></i>
                         <span>All departments</span>
                         <ul class="depart-hover">
-                            @if(isset($kategori))
-                                @foreach ($kategori as $row)
+                            @php
+                                $kategori_list = Session::get('kategori');
+                            @endphp
+                            @if(isset($kategori_list))
+                                @foreach($kategori_list as $row)
                                     <li class="{{Request::segment(1) == $row->kategori ? 'active' : ''}}"><a href="#">{{ $row->kategori }}</a></li>
                                 @endforeach
                             @endif
@@ -217,15 +219,15 @@
                             <a href="#"><img src="/img/ratans/footer-logo.png" alt=""></a>
                         </div>
                         <ul>
-                            <li>Address: {{ $office->address ?? '' }}</li>
-                            <li>Phone: {{ $office->phone ?? '' }}</li>
-                            <li>Email: {{ $office->email ?? ''}}</li>
+                            <li>Address: {{ Session::get('office')->address ?? '' }}</li>
+                            <li>Phone: {{ Session::get('office')->phone ?? '' }}</li>
+                            <li>Email: {{ Session::get('office')->email ?? ''}}</li>
                         </ul>
                         <div class="footer-social">
-                            <a href="{{ $office->fb ?? '' }}"><i class="fa fa-facebook"></i></a>
-                            <a href="{{ $office->ig ?? '' }}"><i class="fa fa-instagram"></i></a>
-                            <a href="{{ $office->twitte ?? '' }}"><i class="fa fa-twitter"></i></a>
-                            <!-- <a href="{{ $office->tiktok ?? '' }}"><i class="fa fa-"></i></a> -->
+                            <a href="{{ Session::get('office')->fb ?? '' }}"><i class="fa fa-facebook"></i></a>
+                            <a href="{{ Session::get('office')->ig ?? '' }}"><i class="fa fa-instagram"></i></a>
+                            <a href="{{ Session::get('office')->twitte ?? '' }}"><i class="fa fa-twitter"></i></a>
+                            <!-- <a href="{{ Session::get('office')->tiktok ?? '' }}"><i class="fa fa-"></i></a> -->
                         </div>
                     </div>
                 </div>

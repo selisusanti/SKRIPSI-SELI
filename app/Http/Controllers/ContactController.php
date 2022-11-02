@@ -18,9 +18,11 @@ class ContactController extends Controller
     
     public function index(Request $request)
     {
-        $office     = Office::first();
+        $kategori       = CartController::cartList('kategori');
+        $cartItems      = CartController::cartList('list');
         return view('contact')
-            ->with('office', $office);
+                ->with('kategori', $kategori)
+                ->with('cartItems', $cartItems);
     }
 
 

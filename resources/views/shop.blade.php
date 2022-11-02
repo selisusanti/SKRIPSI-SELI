@@ -1,6 +1,7 @@
 @extends('layouts.layouts')
 @section('title', 'Profile')
 @section('content')
+
     @if(isset($page))
     <?php $noPage = $page ?>
     @else
@@ -169,4 +170,13 @@
         </div>
     </div>
     <!-- Partner Logo Section End -->
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            alert("ok");
+        });
+        
+    </script>
 @endsection

@@ -5,6 +5,8 @@ use App\Http\Controllers\UMA\PenyerahanAkunController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CartController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -37,3 +39,10 @@ Route::get('shop', [ShopController::class, 'index']);
 Route::get('shop/{id}', [ShopController::class, 'detail']);
 Route::post('shop', [ShopController::class, 'save']);
 Route::post('updateShop', [ShopController::class, 'update']);
+
+
+Route::get('cart', [CartController::class, 'index']);
+Route::post('cart/update', [CartController::class, 'update']);
+Route::post('cart/remove', [CartController::class, 'removeCart']);
+
+Route::get('/profile', [UserController::class, 'profile']);

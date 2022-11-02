@@ -10,6 +10,7 @@ use App\User;
 use App\Models\Office;
 use App\Models\Produk;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Session;
 
 
 class AuthController extends Controller
@@ -20,8 +21,8 @@ class AuthController extends Controller
     
     public function index(Request $request)
     {
-        $office         = Office::first();
-        $kategori       = Kategori::get();
+        // \Cart::clear();
+        $cartItems      = CartController::cartList('list');
         $sofa           = Produk::where('status','1')
                             ->where('id_kategori','1')
                             ->get();
@@ -30,10 +31,9 @@ class AuthController extends Controller
                             ->get();
 
         return view('welcome')
-            ->with('office', $office)
             ->with('meja', $meja)
             ->with('sofa', $sofa)
-            ->with('kategori', $kategori);
+            ->with('cartItems', $cartItems);
     }
 
     public function registerview(Request $request)
@@ -70,17 +70,14 @@ class AuthController extends Controller
                     'success' => 'Register Sukses, tolong cek email!'
                 ]);
 
-        // $token = $user->createToken('auth_token')->plainTextToken;
-        // return response()
-        //     ->json(['data' => $user,'access_token' => $token, 'token_type' => 'Bearer', ]);
     }
 
     public function login(Request $request)
     {
         if (!Auth::attempt($request->only('email', 'password')))
         {
-            return response()
-                ->json(['message' => 'Unauthorized'], 401);
+            Session::flash('error', "Unauthorized, Cek kembali email dan password anda !");
+            return back()->withinput();
         }
 
         $user = User::where('email', $request['email'])->firstOrFail();

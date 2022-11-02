@@ -74,7 +74,7 @@
                                         <!-- <span>oranges</span> -->
                                         <input type="hidden" name="id" value="{{ $produk->id }}" >
                                         <h3>{{ $produk->name ?? ''}}</h3>
-                                        <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a>
+                                        <!-- <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a> -->
                                     </div>
                                     <div class="pd-desc">
                                         <h4>Rp. {{ number_format($produk->harga ?? '','0') }} <span>Rp. {{ number_format($produk->harga_asli ?? '','0') }}</span></h4>
@@ -94,9 +94,9 @@
                                     <div class="pd-share">
                                         <div class="p-code">Sisa : {{ $produk->stok ?? '0' }}</div>
                                         <div class="pd-social">
-                                            <a href="#"><i class="ti-facebook"></i></a>
-                                            <a href="#"><i class="ti-twitter-alt"></i></a>
-                                            <a href="#"><i class="ti-linkedin"></i></a>
+                                            <a href="#"><i class="icon_heart_alt"></i></a>
+                                            <!-- <a href="#"><i class="ti-twitter-alt"></i></a>
+                                            <a href="#"><i class="ti-linkedin"></i></a> -->
                                         </div>
                                     </div>
                                 </div>

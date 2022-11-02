@@ -50,7 +50,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>Address:</span>
-                                <p>{{ $office->address ?? '' }}</p>
+                                <p>{{ Session::get('office')->address ?? '' }}</p>
                             </div>
                         </div>
                         <div class="cw-item">
@@ -59,7 +59,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>Phone:</span>
-                                <p>{{ $office->phone ?? '' }}</p>
+                                <p>{{ Session::get('office')->phone ?? '' }}</p>
                             </div>
                         </div>
                         <div class="cw-item">
@@ -68,7 +68,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>Email:</span>
-                                <p>{{ $office->email ?? '' }}</p>
+                                <p>{{ Session::get('office')->email ?? '' }}</p>
                             </div>
                         </div>
                     </div>
