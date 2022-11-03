@@ -52,6 +52,24 @@ class CartController extends Controller
 
     }
 
+    public function kupon(Request $request)
+    {
+            $diskon     = Diskon::where('kode_diskon',$request->code)
+                            ->where('kuota','>','0')
+                            ->first();
+
+
+            if (empty($diskon))
+            {
+                Session::flash('error', "Voucher diskon tidak ditemukan!");
+            }
+
+            return response()->json([
+                "statusCode" => 200,
+                "diskon"     => $diskon,
+            ]);
+
+    }
 
     public function detail($id)
     {

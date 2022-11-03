@@ -43,9 +43,11 @@ Route::post('shop/diskon', [ShopController::class, 'diskon']);
 
 
 Route::get('cart', [CartController::class, 'index']);
+Route::get('kupon', [CartController::class, 'kupon']);
 Route::post('cart/update', [CartController::class, 'update']);
 Route::post('cart/remove', [CartController::class, 'removeCart']);
 
 Route::get('checkout', [CartController::class, 'checkout']);
 
 Route::get('/profile', [UserController::class, 'profile']);
+

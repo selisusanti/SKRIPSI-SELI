@@ -99,41 +99,25 @@
                             </div> -->
                             <div class="discount-coupon">
                                 <h6>Discount Codes</h6>
-                                <form action="/cart" class="coupon-form" method="get">
-                                    @csrf
-                                    <!-- <input type="hidden" value="get" _method="get"> -->
-                                    <input type="text" required value="{{ $kode ?? '' }}" name="code" max='10' placeholder="Enter your codes">
-                                    <button type="submit" class="site-btn coupon-btn">Apply</button>
-                                </form>
+                                <div class="coupon-form">
+                                    <input type="text" required value="{{ $kode ?? '' }}" id="code" name="code" max='10' placeholder="Enter your codes">
+                                    <button type="submit" class="site-btn coupon-btn" id="kupon-cek">Apply</button>
+                                </div>
                             </div>
                         </div>
 
                         @php
-
-                            if(isset($diskon)){
-                                $potongan     = '10';
-                                $max_potongan = '100000';
-                                $total_diskon = ($total * 10) / 100 ;
-
-                                if($total_diskon > $max_potongan){
-                                    $total_diskon = $max_potongan;
-                                }
-                            }else{
-                                $total_diskon    = 0;
-                            }
-
-
-                            $total_akhir = 0;
-                            $total_akhir = $total - $total_diskon;
+                        $total_diskon    = 0;
                         @endphp
                         <div class="col-lg-4 offset-lg-4">
                             <div class="proceed-checkout">
                                 <ul>
                                     <li class="subtotal">Subtotal <span>{{ number_format($total ?? '','0') }}</span></li>
-                                    <li class="subtotal">Diskon <span>{{ number_format($total_diskon ?? '','0') }}</span></li>
-                                    <li class="cart-total">Total <span>{{ number_format($total_akhir ?? '','0') }}</span></li>
+                                    <li class="subtotal">Diskon <span id="total_diskon">{{ number_format($total_diskon ?? '','0') }}</span></li>
+                                    <li class="cart-total">Total <span id="total_akhir">{{ number_format($total ?? '','0') }}</span></li>
                                 </ul>
-                                <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                                    <a href="#" class="proceed-btn">PROCEED TO CHECK OUT</a>
+                                    <button type="submit" class="proceed-btn">PROCEED TO CHECK OUT</button>
                             </div>
                         </div>
                     </div>
@@ -176,4 +160,45 @@
         </div>
     </div>
     <!-- Partner Logo Section End -->
+
+    <script type="text/javascript">
+        $('#kupon-cek').click(function(){
+            $.ajax({
+                type: "get",
+                url: "kupon",
+                data: { 
+                    code: $('#code').val(),  
+                },
+                success: function(data){
+                    if(data.diskon){
+                        var persen = data.diskon.persen_diskon;
+                        var max    = data.diskon.max_diskon;
+                        var total_pesanan    = {{ $total }};
+                        var total_diskon     = (total_pesanan * persen) / 100 ;
+
+                        if(total_diskon > max){
+                            var total_diskon = max;
+                        }else{
+                            var total_diskon    = total_diskon;
+                        }
+
+                        var total_akhir = total_pesanan - total_diskon;
+                        var total_diskon_1= total_diskon.toLocaleString('en-US', {maximumFractionDigits:8});
+                        var total_akhir_1= total_akhir.toLocaleString('en-US', {maximumFractionDigits:8});
+                        $("#total_diskon").text(total_diskon_1);
+                        $("#total_akhir").text(total_akhir_1);
+                    }else{
+
+                        var total_pesanan    = {{ $total }};
+                        var total_akhir_1    = total_pesanan.toLocaleString('en-US', {maximumFractionDigits:8});
+                        $("#total_diskon").text('0');
+                        $("#total_akhir").text(total_akhir_1);
+                    }
+                },
+                error: function(data){
+                    alert("Hubungi admin");
+                }
+            });
+        });
+    </script>
 @endsection
