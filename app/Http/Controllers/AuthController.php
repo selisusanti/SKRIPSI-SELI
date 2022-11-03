@@ -10,6 +10,7 @@ use App\User;
 use App\Models\Office;
 use App\Models\Produk;
 use App\Models\Kategori;
+use App\Models\Carts;
 use Illuminate\Support\Facades\Session;
 
 
@@ -21,6 +22,7 @@ class AuthController extends Controller
     
     public function index(Request $request)
     {
+        // return Session::get('cartItems');
         // \Cart::clear();
         $cartItems      = CartController::cartList('list');
         $sofa           = Produk::where('status','1')

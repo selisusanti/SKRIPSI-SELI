@@ -72,7 +72,7 @@
                                 <div class="product-details">
                                     <div class="pd-title">
                                         <!-- <span>oranges</span> -->
-                                        <input type="hidden" name="id" value="{{ $produk->id }}" >
+                                        <input type="hidden" name="produk_id" value="{{ $produk->id }}" >
                                         <h3>{{ $produk->name ?? ''}}</h3>
                                         <!-- <a href="#" class="heart-icon"><i class="icon_heart_alt"></i></a> -->
                                     </div>

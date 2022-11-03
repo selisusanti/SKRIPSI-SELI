@@ -39,10 +39,13 @@ Route::get('shop', [ShopController::class, 'index']);
 Route::get('shop/{id}', [ShopController::class, 'detail']);
 Route::post('shop', [ShopController::class, 'save']);
 Route::post('updateShop', [ShopController::class, 'update']);
+Route::post('shop/diskon', [ShopController::class, 'diskon']);
 
 
 Route::get('cart', [CartController::class, 'index']);
 Route::post('cart/update', [CartController::class, 'update']);
 Route::post('cart/remove', [CartController::class, 'removeCart']);
+
+Route::get('checkout', [CartController::class, 'checkout']);
 
 Route::get('/profile', [UserController::class, 'profile']);

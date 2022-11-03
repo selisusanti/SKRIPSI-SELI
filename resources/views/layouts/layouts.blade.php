@@ -115,16 +115,17 @@
 
                                                 @php
                                                     $total = 0 ;
+                                                    $data_cart = Session::get('cartItems');
                                                 @endphp
 
-                                                @if(isset($cartItems))
-                                                    @foreach ($cartItems as $item)
+                                                @if(isset($data_cart))
+                                                    @foreach ($data_cart as $item)
                                                         <tr>
-                                                            <td class="si-pic"><img src="{{ $item->associatedModel->image ?? '' }}" alt=""></td>
+                                                            <td class="si-pic"><img src="{{ $item->detailProduk->image ?? '' }}" alt=""></td>
                                                             <td class="si-text">
                                                                 <div class="product-selected">
-                                                                    <p>{{ $item->price ?? '' }} x {{ $item->quantity ?? '' }}</p>
-                                                                    <h6>{{ $item->name ?? ''}}</h6>
+                                                                    <p>{{ number_format( $item->detailProduk->harga ) }} x {{ $item->quantity ?? '' }}</p>
+                                                                    <h6>{{ $item->detailProduk->name ?? ''}}</h6>
                                                                 </div>
                                                             </td>
                                                             <td class="si-close">
@@ -132,7 +133,7 @@
                                                             </td>
                                                         </tr>
                                                         @php
-                                                            $harga = $item->price * $item->quantity;
+                                                            $harga = $item->detailProduk->harga * $item->quantity;
                                                             $total = $total + $harga;
                                                         @endphp
                                                     @endforeach
