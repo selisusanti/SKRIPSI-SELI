@@ -49,6 +49,7 @@ Route::post('cart/remove', [CartController::class, 'removeCart']);
 Route::post('order', [CartController::class, 'order']);
 
 Route::get('checkout', [CartController::class, 'checkout']);
+Route::post('checkout', [CartController::class, 'simpanPesanan']);
 Route::get('/profile', [UserController::class, 'profile']);
 
 Route::get('ongkir/city', [CartController::class, 'getCity']);

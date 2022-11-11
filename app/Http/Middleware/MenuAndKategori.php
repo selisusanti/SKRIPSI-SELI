@@ -32,9 +32,11 @@ class MenuAndKategori
         
         if(\Auth::check()){
             $cartItems   = Carts::with(['detailProduk'])
+                            ->where('status',true)
                             ->Where('user_id', \Auth::user()->id)->get();
         }else{
             $cartItems   = Carts::with(['detailProduk'])
+                            ->where('status',true)
                             ->where('session_id',Session::getId())->get();
         }
         

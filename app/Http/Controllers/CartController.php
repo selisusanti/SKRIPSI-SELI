@@ -9,6 +9,8 @@ use Validator;
 use App\User;
 use App\Models\Carts;
 use App\Models\Office;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Produk;
 use App\Models\Kategori;
 use App\Models\Diskon;
@@ -198,12 +200,69 @@ class CartController extends Controller
             $onkos      = $city->rajaongkir->results[0]->costs[0]->cost[0]->value;
         }
         $total_ongkir = $onkos * $request->weight;
-        
+
         return response()->json([
             "statusCode"    => 200,
             "data"          => $city->rajaongkir->results,
             "ongkir"        => $total_ongkir,
         ]);
     }
+
+
+    public function simpanPesanan(Request $request)
+    {
+
+        try{
+
+            if(\Auth::check()){
+                $cartItems   = Carts::with(['detailProduk'])
+                                ->Where('user_id', \Auth::user()->id)
+                                ->where('status',true)
+                                ->get();
+    
+                $save_order     = Order::create([
+                    'id_user'         => \Auth::user()->id,
+                    'ongkir'          => $request->ongkir,
+                    'total_harga'     => $request->total_harga,
+                    'diskon'          => $request->diskon,
+                    'total_harga_akhir'         => $request->total_harga_akhir,
+                    'alamat'                    => $request->alamat,
+                    'kecamatan'                 => $request->kecamatan,
+                    'kota'                      => $request->kota,
+                    'provincy'                  => $request->provincy,
+                    'nama'                      => $request->nama,
+                    // inprogress 1
+                    'status'                    => '1'
+                ]);
+    
+                foreach($cartItems as $row){
+                    $total              = $row->quantity * $row->detailProduk->harga ;
+                    $save_order_detail  = OrderDetail::create([
+                        'id_order'  => $save_order->id,
+                        'id_produk' => $row->produk_id,
+                        'harga'     => $row->detailProduk->harga,
+                        'jumlah'    => $row->quantity,
+                        'total'     => $total,
+                    ]);
+    
+                }
+                
+            }else{
+                return back()->message('error', 'Silahkan login terlebih dahulu!');
+            }
+    
+            $cartItems   = Carts::with(['detailProduk'])
+                            ->Where('user_id', \Auth::user()->id)
+                            ->update([
+                                'status' => '0', 
+                            ]);
+            
+            return redirect('shop');
+
+        } catch (\Throwable $th) {
+            return back()->message('error', 'Gagal simpan proses checkout!');
+        }
+    }
+    
 
 }

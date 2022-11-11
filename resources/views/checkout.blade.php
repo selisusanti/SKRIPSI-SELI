@@ -82,17 +82,17 @@
                             </div>
                             <div class="col-lg-6">
                                 <label for="zip">Postcode / ZIP (optional)</label>
-                                <input type="text" name="kode_pos" value="{{ old('kode_pos') }}" id="kode_pos" required>
+                                <input type="number" name="kode_pos" value="{{ old('kode_pos') }}" id="kode_pos" required>
                                 <span class="text-danger" id="alert_kode_pos"></span>
                             </div>
                             <div class="col-lg-6">
                                 <label for="phone">Phone<span>*</span></label>
-                                <input type="text" name="phone" value="{{ old('phone') }}" id="phone" required>
+                                <input type="number" name="phone" value="{{ old('phone') }}" id="phone" required>
                                 <span class="text-danger" id="alert_phone"></span>
                             </div>
-                            <div class="col-lg-12">
+                            <!-- <div class="col-lg-12">
                                 <button type="button" id="cek_ongkir" class="site-btn place-btn">Cek Ongkir</button>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -115,7 +115,7 @@
                                                 $weight = $weight + $item->detailProduk->weight;
                                             @endphp
 
-                                            <li class="fw-normal">{{ $item->detailProduk->name ?? '' }} x {{ $item->quantity ?? '0' }} <span>{{ $item->detailProduk->harga }} </span></li>
+                                            <li class="fw-normal">{{ $item->detailProduk->name ?? '' }} x {{ $item->quantity ?? '0' }} <span>{{ number_format($harga ?? '','0') }}</span></li>
                                     
                                         @endforeach
                                     @endif
@@ -134,9 +134,13 @@
 
                                         $total_akhir = $total_pesanan - $total_diskon;
                                     @endphp
-                                    <li class="fw-normal">Diskon <span>{{ number_format($total_diskon ?? '','0') }}</span></li>
-                                    <li class="fw-normal">Onkos Kirim <span>0</span></li>
-                                    <li class="total-price">Total <span>{{ number_format($total_akhir ?? '','0') }}</span></li>
+                                    <input type="hidden" id="ongkir" name="ongkir" value="0">
+                                    <input type="hidden" id="diskon" name="diskon" value="{{ $total_diskon }}">
+                                    <input type="hidden" id="total_harga_akhir" name="total_harga_akhir" value="{{ $total_akhir }}">
+                                    <input type="hidden" id="total_harga" name="total_harga" value="{{ $total_pesanan }}">
+                                    <li class="fw-normal">Ongkos Kirim <span id="total_ongkir">0</span></li>
+                                    <li class="fw-normal">Diskon <span id="total_diskon">{{ number_format($total_diskon ?? '','0') }}</span></li>
+                                    <li class="total-price">Total <span id="total_bayar">{{ number_format($total_akhir ?? '','0') }}</span></li>
                                 </ul>
                                 <!-- <div class="payment-check">
                                     <div class="pc-item">
@@ -214,7 +218,50 @@
         });
     });
 
+    $('#kota').change(function(){
+        cekOngkir();
+    });
+
+    function cekOngkir(){
+        var provincy    = $('#provincy').val();
+        var kota        = $('#kota').val();
+
+        $.ajax({
+            type: "GET",
+            url: "/ongkir/cekongkirjne",
+            data: { 
+                provincy_id: provincy,
+                kota_id: kota,
+                weight : {{$weight}}
+            },
+            success: function(data){
+                if(data.ongkir){
+                    var ongkir           = data.ongkir;
+                    var total_belanja    = {{ $total }};
+                    var total_diskon     = {{ $total_diskon }} ;
+                    var total_bayar      = (ongkir + total_belanja) - total_diskon;
+                    var total_bayar_1      = total_bayar.toLocaleString('en-US', {maximumFractionDigits:8});
+                    var for_ongkir       = ongkir.toLocaleString('en-US', {maximumFractionDigits:8});
+                    $("#ongkir").val(ongkir);
+                    $("#total_harga_akhir").val(total_bayar);
+                    $("#total_ongkir").text(for_ongkir);
+                    $("#total_bayar").text(total_bayar_1);
+                }else{
+                    $("#alert_code").text('Kode Tidak Ditemukan atau tidak support');
+                    var total_pesanan    = {{ $total }};
+                    var total_akhir_1    = total_pesanan.toLocaleString('en-US', {maximumFractionDigits:8});
+                    $("#total_ongkir").text('0');
+                    $("#total_akhir").text(total_akhir_1);
+                }
+            },
+            error: function(data){
+                alert("Hubungi admin");
+            }
+        });
+    }
+
     $('#cek_ongkir').click(function(){
+        
         $("#alert_phone").text('');
         $("#alert_desa").text('');
         $("#alert_kode_pos").text('');
@@ -232,6 +279,7 @@
         var kode_pos    = $('#kode_pos').val();
         var desa        = $('#desa').val();
         var phone       = $('#phone').val();
+
         if(phone == ''){
             $("#alert_phone").text('Input Data');
         }else{
@@ -280,15 +328,6 @@
             $("#alert_nama").text('');
         }
 
-        var nama        = $('#nama').val();
-        var provincy    = $('#provincy').val();
-        var kota        = $('#kota').val();
-        var alamat      = $('#alamat').val();
-        var kecamatan   = $('#kecamatan').val();
-        var kode_pos    = $('#kode_pos').val();
-        var desa        = $('#desa').val();
-        var phone       = $('#phone').val();
-
         if(nama != '' && provincy != '' && kota != '' && alamat != '' && kecamatan != '' && kode_pos != '' && desa != '' && phone != ''){
             $.ajax({
                 type: "GET",
@@ -299,14 +338,29 @@
                     weight : {{$weight}}
                 },
                 success: function(data){
-                    
+                    alert(data.ongkir);
+                    if(data.ongkir){
+                        var ongkir           = data.ongkir;
+                        var total_belanja    = {{ $total }};
+                        var total_diskon     = {{ $total_diskon }} ;
+                        var total_bayar      = (ongkir + total_belanja) - total_diskon;
+                        var total_bayar      = total_bayar.toLocaleString('en-US', {maximumFractionDigits:8});
+                        var for_ongkir       = ongkir.toLocaleString('en-US', {maximumFractionDigits:8});
+                        $("#total_ongkir").text(for_ongkir);
+                        $("#total_bayar").text(total_bayar);
+                    }else{
+                        $("#alert_code").text('Kode Tidak Ditemukan atau tidak support');
+                        var total_pesanan    = {{ $total }};
+                        var total_akhir_1    = total_pesanan.toLocaleString('en-US', {maximumFractionDigits:8});
+                        $("#total_diskon").text('0');
+                        $("#total_akhir").text(total_akhir_1);
+                    }
                 },
                 error: function(data){
                     alert("Hubungi admin");
                 }
             });
         }
-
     });
 
 </script>
