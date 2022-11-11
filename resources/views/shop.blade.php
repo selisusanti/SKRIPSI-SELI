@@ -173,10 +173,6 @@
 
 
     <script type="text/javascript">
-
-        $(document).ready(function(){
-            alert("ok");
-        });
         
     </script>
 @endsection

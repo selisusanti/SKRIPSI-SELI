@@ -46,8 +46,13 @@ Route::get('cart', [CartController::class, 'index']);
 Route::get('kupon', [CartController::class, 'kupon']);
 Route::post('cart/update', [CartController::class, 'update']);
 Route::post('cart/remove', [CartController::class, 'removeCart']);
+Route::post('order', [CartController::class, 'order']);
 
 Route::get('checkout', [CartController::class, 'checkout']);
-
 Route::get('/profile', [UserController::class, 'profile']);
+
+Route::get('ongkir/city', [CartController::class, 'getCity']);
+Route::get('ongkir/cekongkirjne', [CartController::class, 'getOngkir']);
+
+
 

@@ -12,11 +12,14 @@ use App\Models\Office;
 use App\Models\Produk;
 use App\Models\Kategori;
 use App\Models\Diskon;
+use App\Services\OngkirService;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-    public function __construct() {
+    private $ongkirService;
+    public function __construct(){
+        $this->ongkirService = new OngkirService();
     }
 
     public static function cartList($nilai)
@@ -163,6 +166,44 @@ class CartController extends Controller
         return view('checkout');
     }
     
+    public function order(Request $request)
+    {
+            $diskon     = Diskon::where('kode_diskon',$request->code)
+                            ->where('kuota','>','0')
+                            ->first();
+                            
+            $provincy   = $this->ongkirService->getProvincy();
+            return view('checkout')
+                    ->with('voucher',$request->code)
+                    ->with('diskon', $diskon)
+                    ->with('provincy', $provincy);
 
+    }
+
+    public function getCity(Request $request)
+    {
+        $city   = $this->ongkirService->getCity($request->provincy_id);
+            
+        return response()->json([
+            "statusCode"    => 200,
+            "data"          => $city->rajaongkir->results ?? '',
+        ]);
+    }
+
+    public function getOngkir(Request $request)
+    {
+        $city           = $this->ongkirService->getOngkir($request->provincy_id,$request->kota_id,$request->weight);
+        $onkos          = 0;
+        if(isset($city->rajaongkir->results)){
+            $onkos      = $city->rajaongkir->results[0]->costs[0]->cost[0]->value;
+        }
+        $total_ongkir = $onkos * $request->weight;
+        
+        return response()->json([
+            "statusCode"    => 200,
+            "data"          => $city->rajaongkir->results,
+            "ongkir"        => $total_ongkir,
+        ]);
+    }
 
 }
