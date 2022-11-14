@@ -156,7 +156,7 @@
                                     </div>
                                     <div class="select-button">
                                         <a href="/cart" class="primary-btn view-card">VIEW CARD</a>
-                                        <a href="#" class="primary-btn checkout-btn">CHECK OUT</a>
+                                        <!-- <a href="/order" class="primary-btn checkout-btn">CHECK OUT</a> -->
                                     </div>
                                 </div>
                             </li>
