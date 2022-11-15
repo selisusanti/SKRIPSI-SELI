@@ -658,7 +658,7 @@
                                                     <p
                                                             style="font-size: 16px; line-height: 22.4px"
                                                     >
-                                                    Hai [nama], <br>
+                                                    Hai user, <br>
                                                     Ada permintaan untuk mengubah kata sandi Anda!<br>
                                                     Jika Anda tidak membuat permintaan ini, harap abaikan email ini.<br>
                                                     Atau, silakan klik tautan ini untuk mengubah kata sandi Anda:
