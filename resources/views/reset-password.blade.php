@@ -1,5 +1,5 @@
 @extends('layouts.layouts')
-@section('title', 'Profile')
+@section('title', 'Reset Password')
 @section('content')
 
     @if($errors->any())
@@ -30,7 +30,7 @@
                 <div class="col-lg-12">
                     <div class="breadcrumb-text">
                         <a href="#"><i class="fa fa-home"></i> Home</a>
-                        <span>Register</span>
+                        <span>Reset Password</span>
                     </div>
                 </div>
             </div>
@@ -44,26 +44,20 @@
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">
                     <div class="register-form">
-                        <h2>Register</h2>
-                        <form id="form-login" action="/register" method="post" id="login-form">
+                        <h2>Reset Password</h2>
+                        <form id="form-login" action="/reset-password" method="post" id="login-form">
                             @csrf    
+                            <input type="hidden" value="{{ $data->id }}" id="id_token" name="id_token">
+                            <input type="hidden" value="{{ $data->id_user }}" id="id_user" name="id_user">
                             <div class="group-input">
-                                <label for="username">Username *</label>
-                                <input class="form-control" value="{{ old('name') }}" type="text" id="name" name="name">
-                            </div>
-                            <div class="group-input">
-                                <label for="username">Email address *</label>
-                                <input class="form-control" value="{{ old('email') }}" type="email" id="email" name="email">
-                            </div>
-                            <div class="group-input">
-                                <label for="pass">Password *</label>
+                                <label for="username">Password</label>
                                 <input class="form-control" value="{{ old('password') }}" type="password" id="password" name="password">
                             </div>
                             <div class="group-input">
-                                <label for="con-pass">Confirm Password *</label>
-                                <input class="form-control" value="{{ old('password_confirm') }}" type="password" id="password_confirm" name="password_confirm">
+                                <label for="username">Confirm Password</label>
+                                <input class="form-control" value="{{ old('confirm_password') }}" type="password" id="confirm_password" name="confirm_password">
                             </div>
-                            <button type="submit" class="site-btn register-btn">REGISTER</button>
+                            <button type="submit" class="site-btn register-btn">RESET PASSWORD</button>
                         </form>
                         <div class="switch-login">
                             <a href="/login" class="or-login">Or Login</a>

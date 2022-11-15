@@ -28,6 +28,10 @@ Route::get('register', [AuthController::class, 'registerview']);
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::get('login', [AuthController::class, 'loginview']);
+Route::get('forgetPassword', [AuthController::class, 'forgetPasswordView']);
+Route::get('reset-password/{token}', [AuthController::class, 'resetPasswordView']);
+Route::post('reset-password', [AuthController::class, 'saveResetPassword']);
+Route::post('sendEmail', [AuthController::class, 'sendEmail']);
 Route::get('logout', [AuthController::class, 'logout']);
 
 
